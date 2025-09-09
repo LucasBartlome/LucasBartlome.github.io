@@ -4,12 +4,19 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Projects | Lucas Bartlome</title>
-   <link rel="icon" href="images/favicon.png" type="image/png">
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
   <header>
+    <div class="header-video">
+    <video id="heroVideo" class="header-video__media"
+      autoplay muted playsinline loop preload="metadata"
+      poster="images/tech-banner.png">
+      <source src="videos/movingBG.mp4" type="video/mp4">
+    </video>
+    </div>
+
     <h1>My Projects</h1>
     <p>Showcasing some my work in Software Development & IT</p>
     <nav>
@@ -89,12 +96,12 @@
 
     <section>
       <h2>Project 4: Portfolio Website</h2>
-      <p>This website itself — built using HTML and CSS to demonstrate my front-end skills and design sense.</p>
+      <p>This website itself — built using HTML, CSS, and JavaScript to demonstrate my front-end skills and design sense.</p>
     </section>
 
     <section>
       <h2>More Projects Coming Soon</h2>
-      <p>I’m continuously working on new projects to expand my skills. Stay tuned!</p>
+      <p>I’m continuously working on new projects to expand my skills.</p>
     </section>
   </div>
 
@@ -105,5 +112,25 @@
         You can also find me on   
         <a href="https://www.linkedin.com/in/lucasbartlome/" style="color:#ddd" target="_blank">LinkedIn</a>
   </footer>
+        <script>
+        const header = document.querySelector('header');
+        const v = document.getElementById('heroVideo');
+
+        if (v && header) {
+          const showVideo = () => header.classList.add('video-ready');
+          v.addEventListener('canplay', showVideo, { once: true });
+          v.addEventListener('loadeddata', showVideo, { once: true });
+
+          // Mobile fallback: resume play on first interaction if autoplay is blocked
+          v.play().catch(() => {
+            const resume = () => { v.play().catch(()=>{}); 
+              document.removeEventListener('touchstart', resume);
+              document.removeEventListener('click', resume);
+            };
+            document.addEventListener('touchstart', resume, { once: true });
+            document.addEventListener('click', resume, { once: true });
+          });
+        }
+      </script>
 </body>
 </html>

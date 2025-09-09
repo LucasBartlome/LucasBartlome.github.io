@@ -85,6 +85,28 @@ header nav a.active {
   background: #2a2a2a;
   box-shadow: 0 0 0 rgba(0,0,0,0.4) inset, 0 1px 2px rgba(0,0,0,0.2);
 }
+header { overflow: clip; } /* ensures video doesn’t spill out */
+
+.header-video {
+  position: absolute;
+  inset: 0;
+  z-index: 0;               /* below your text */
+  pointer-events: none;
+}
+
+.header-video__media {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  opacity: 0;               /* hidden until ready */
+  transition: opacity .5s ease;
+}
+
+/* Fade in once ready */
+header.video-ready .header-video__media {
+  opacity: 1;
+}
 
 /* ========== Content Layout ========== */
 ul { list-style-type: disc; }
@@ -157,3 +179,23 @@ footer a:hover {
 @media (max-width: 600px) {
   footer p, footer a { font-size: 0.95rem; line-height: 1.5; }
 }
+
+/* --- Video background layer (sits above the image, below text) --- */
+header { overflow: clip; }                /* already has position:relative; good */
+.header-video {
+  position: absolute;
+  inset: 0;
+  z-index: 0;                             /* below your h1/p/nav (z-index:2) */
+  pointer-events: none;                   /* clicks go through */
+}
+.header-video__media {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  opacity: 0;                             /* hidden until ready */
+  transition: opacity .4s ease;
+}
+
+/* Fade-in once JS adds .video-ready to <header> */
+header.video-ready .header-video__media { opacity: 1; }

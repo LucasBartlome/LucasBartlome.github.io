@@ -4,12 +4,19 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Resume | Lucas Bartlome</title>
-   <link rel="icon" href="images/favicon.png" type="image/png">
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
   <header>
+    <div class="header-video">
+    <video id="heroVideo" class="header-video__media"
+      autoplay muted playsinline loop preload="metadata"
+      poster="images/tech-banner.png">
+      <source src="videos/movingBG.mp4" type="video/mp4">
+    </video>
+    </div>
+
     <h1>My Resume</h1>
     <p>Experience, Skills, and Education</p>
     <nav>
@@ -84,6 +91,26 @@
         You can also find me on   
         <a href="https://www.linkedin.com/in/lucasbartlome/" style="color:#ddd" target="_blank">LinkedIn</a>
   </footer>
-</body>
+          // Mobile fallba
+          <script>
+          const header = document.querySelector('header');
+          const v = document.getElementById('heroVideo');
 
+          if (v && header) {
+            const showVideo = () => header.classList.add('video-ready');
+            v.addEventListener('canplay', showVideo, { once: true });
+            v.addEventListener('loadeddata', showVideo, { once: true });
+
+            // Mobile fallback: resume play on first interaction if autoplay is blocked
+            v.play().catch(() => {
+              const resume = () => { v.play().catch(()=>{}); 
+                document.removeEventListener('touchstart', resume);
+                document.removeEventListener('click', resume);
+              };
+              document.addEventListener('touchstart', resume, { once: true });
+              document.addEventListener('click', resume, { once: true });
+            });
+          }
+        </script>
+</body>
 </html
