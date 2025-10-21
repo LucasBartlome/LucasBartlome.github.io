@@ -57,22 +57,65 @@
       <p style="font-size: 15px;">After running the program it gives you an MP3 File of your fully completed AI generated Podcast!</h1>
     </section>
     <section>
-      <h2>Project 2: Fishing Game (Python)</h2>
+      <h2>Project 2: Bit Fishing — 2D Python Game</h2>
       <p>
-        I created a 2D fishing game using Python in Visual Studio Code. 
-        This project taught me about game loops, sprite handling, and user input in Python.
-        The game allows the player to cast a line, catch different fish, and see them appear next to the fisherman. 
-        I also implemented scaling logic so fish size reflects their weight.
+        <b>Overview:</b><br>
+        <em>Bit Fishing</em> is a 2D fishing simulation game developed entirely in <b>Python</b> using the 
+        <b>Pygame</b> and <b>PyTMX</b> libraries. The project combines sprite animation, physics, and map-based 
+        world exploration to create a relaxing yet progression-driven fishing experience. 
+        Players begin at the farm and can unlock new fishing locations such as the <b>Pond, River, Lake,</b> 
+        and <b>Ocean</b> — each featuring unique fish species and challenges.
+      </p>
+
+      <p>
+        <b>Core Technologies:</b>
+        <ul>
+          <li>Python with <b>Pygame</b> for core engine, animation, and input handling.</li>
+          <li><b>PyTMX</b> and <b>Tiled Map Editor (.tmx)</b> for creating interactive worlds with layered maps and collision tiles.</li>
+          <li><b>Pillow (PIL)</b> for GIF and sprite sheet animation support.</li>
+          <li><b>JSON</b> for storing save data and defining fish tables (species, size, rarity, and value).</li>
+          <li>Object-oriented architecture for reusable classes (Scenes, Overlays, Camera, Player, Boat, etc.).</li>
+        </ul>
+      </p>
+
+      <p>
+        <b>Key Features:</b>
+        <ul>
+          <li>🎣 <b>Interactive Casting System:</b> Aim and cast into fishing zones — distance and timing affect your catch.</li>
+          <li>🐟 <b>Dynamic Fish Tables:</b> Over 40 species, from bluegill and bass to marlin and sharks, each with unique weights and rarities.</li>
+          <li>💰 <b>Upgrade Economy:</b> Earn money from your catches to upgrade your rod, line, lure, and reel or unlock new areas.</li>
+          <li>🧩 <b>Plinko Mini-Game:</b> A physics-based Plinko board determines catch success, influenced by your upgrades.</li>
+          <li>💾 <b>Save/Load System:</b> Three persistent JSON-based save slots track your progress, money, and upgrades.</li>
+          <li>🛶 <b>Boating Mechanic:</b> Switch seamlessly between walking on land and sailing over water in a fully animated boat.</li>
+          <li>🌎 <b>Exploration:</b> Travel between multiple maps — farm, pond, lake, river, and ocean — each with its own environment and rewards.</li>
+          <li>🎨 <b>Pixel-Art Visuals:</b> Custom-designed fish sprites and environmental tiles for a cohesive 2D look.</li>
+        </ul>
+      </p>
+
+      <p>
+        <b>Development Impact:</b><br>
+        This project provided hands-on experience in real-time rendering, event handling, data persistence, and modular Python design. 
+        Building <em>Bit Fishing</em> improved my understanding of how to structure large-scale Pygame projects with multiple interactive systems, 
+        menus, and save mechanics.
       </p>
 
       <!-- Screenshots -->
-      <p style="font-size: 15px;"><b>Main Menu Screen: </b></h1>
-      <br>
-      <img src="images/fishinggame1.png" alt="Fishing Game Screenshot 1" style="width:70%; height:auto;">
-      <p style="font-size: 15px;"><b>In-Game Example: </b></h1>
-      <br>
-      <img src="images/fishinggame2.png" alt="Fishing Game Screenshot 2" style="width:70%; height:auto;">
+      <p style="font-size: 15px;"><b>Main Menu Screen:</b></p>
+      <img src="images/fishinggame1.png" alt="Bit Fishing Main Menu" style="width:70%; height:auto; border-radius:8px;">
+
+      <p style="font-size: 15px;"><b>In-Game Example:</b></p>
+      <img src="images/fishinggame2.png" alt="Bit Fishing Gameplay" style="width:70%; height:auto; border-radius:8px;">
+
+      <p style="font-size: 15px;"><b>In Game Fishing Area:</b></p>
+      <img src="images/fishinggame3.png" alt="Bit Fishing Plinko Mini-Game" style="width:70%; height:auto; border-radius:8px;">
+
+      <p style="font-size: 15px;"><b>Fishing Mini-Game (Plinko):</b></p>
+      <img src="images/fishinggame4.png" alt="Bit Fishing Upgrade Shop" style="width:70%; height:auto; border-radius:8px;">
+
+      <p style="font-size: 15px;"><b>Caught a Fish Screen:</b></p>
+      <img src="images/fishinggame5.png" alt="Bit Fishing Ocean Area" style="width:70%; height:auto; border-radius:8px;">
     </section>
+
 
     <section>
       <h2>Project 3: Database In MySQL</h2>
