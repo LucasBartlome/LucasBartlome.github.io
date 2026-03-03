@@ -22,7 +22,13 @@ import {
   Search,
   X,
   Image as ImageIcon,
-  Info
+  Info,
+  ChevronLeft,
+  FileText,
+  Briefcase,
+  GraduationCap,
+  Award,
+  Download
 } from 'lucide-react';
 import { cn } from './lib/utils';
 
@@ -105,11 +111,16 @@ const SectionHeading = ({ children, subtitle, id }: { children: React.ReactNode,
 
 export default function App() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [showResume, setShowResume] = useState(false);
   const [activeTab, setActiveTab] = useState<'overview' | 'gallery'>('overview');
+  const [activeLightboxImageIndex, setActiveLightboxImageIndex] = useState<number | null>(null);
 
   // Reset tab when closing modal
   useEffect(() => {
-    if (!selectedProject) setActiveTab('overview');
+    if (!selectedProject) {
+      setActiveTab('overview');
+      setActiveLightboxImageIndex(null);
+    }
   }, [selectedProject]);
 
   const projects: Project[] = [
@@ -239,7 +250,7 @@ export default function App() {
             <img 
               src="/images/ProfileImg.jpeg" 
               alt="Lucas Bartlome" 
-              className="object-cover w-full h-full grayscale group-hover:grayscale-0 transition-all duration-700"
+              className="object-cover w-full h-full transition-all duration-700"
               referrerPolicy="no-referrer"
             />
             <div className="absolute inset-0 bg-slate-900/10 group-hover:bg-transparent transition-colors" />
@@ -291,7 +302,7 @@ export default function App() {
           <div className="order-2 md:order-1 grid grid-cols-2 gap-4">
             <div className="space-y-4">
               <div className="h-48 bg-slate-200 rounded-2xl overflow-hidden">
-                <img src="/images/FishPic.png" className="w-full h-full object-cover grayscale" referrerPolicy="no-referrer" />
+                <img src="https://picsum.photos/seed/service1/400/400" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
               </div>
               <div className="h-64 bg-slate-900 rounded-2xl flex items-center justify-center p-6 text-center">
                 <Users className="w-12 h-12 text-white opacity-20 absolute" />
@@ -300,10 +311,10 @@ export default function App() {
             </div>
             <div className="space-y-4 pt-8">
               <div className="h-64 bg-slate-300 rounded-2xl overflow-hidden">
-                <img src="/images/FishPic2.png" className="w-full h-full object-cover grayscale" referrerPolicy="no-referrer" />
+                <img src="https://picsum.photos/seed/service2/400/400" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
               </div>
               <div className="h-48 bg-slate-100 rounded-2xl border border-slate-200 overflow-hidden">
-                <img src="/images/tech-banner.png" className="w-full h-full object-cover opacity-50" referrerPolicy="no-referrer" />
+                <img src="https://picsum.photos/seed/tech-banner/400/400" className="w-full h-full object-cover opacity-50" referrerPolicy="no-referrer" />
               </div>
             </div>
           </div>
@@ -467,7 +478,8 @@ export default function App() {
                               initial={{ opacity: 0, scale: 0.9 }}
                               animate={{ opacity: 1, scale: 1 }}
                               transition={{ delay: i * 0.05 }}
-                              className="rounded-2xl overflow-hidden bg-slate-100 aspect-video group relative"
+                              onClick={() => setActiveLightboxImageIndex(i)}
+                              className="rounded-2xl overflow-hidden bg-slate-100 aspect-video group relative cursor-zoom-in"
                             >
                               <img 
                                 src={img} 
@@ -482,6 +494,218 @@ export default function App() {
                       </motion.div>
                     )}
                   </AnimatePresence>
+                </div>
+              </motion.div>
+            </div>
+          )}
+        </AnimatePresence>
+
+        {/* Lightbox */}
+        <AnimatePresence>
+          {activeLightboxImageIndex !== null && selectedProject && (
+            <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 md:p-12">
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onClick={() => setActiveLightboxImageIndex(null)}
+                className="absolute inset-0 bg-slate-950/95 backdrop-blur-md"
+              />
+              
+              <button
+                onClick={() => setActiveLightboxImageIndex(null)}
+                className="absolute top-8 right-8 z-10 p-3 bg-white/10 hover:bg-white/20 rounded-full text-white transition-all"
+              >
+                <X className="w-6 h-6" />
+              </button>
+
+              <div className="relative w-full h-full flex items-center justify-center">
+                {/* Navigation Buttons */}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setActiveLightboxImageIndex((prev) => 
+                      prev !== null ? (prev - 1 + selectedProject.images.length) % selectedProject.images.length : null
+                    );
+                  }}
+                  className="absolute left-0 md:-left-16 z-10 p-4 text-white/50 hover:text-white transition-all"
+                >
+                  <ChevronLeft className="w-12 h-12" />
+                </button>
+
+                <motion.img
+                  key={activeLightboxImageIndex}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  src={selectedProject.images[activeLightboxImageIndex]}
+                  className="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
+                  referrerPolicy="no-referrer"
+                />
+
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setActiveLightboxImageIndex((prev) => 
+                      prev !== null ? (prev + 1) % selectedProject.images.length : null
+                    );
+                  }}
+                  className="absolute right-0 md:-right-16 z-10 p-4 text-white/50 hover:text-white transition-all"
+                >
+                  <ChevronRight className="w-12 h-12" />
+                </button>
+              </div>
+
+              {/* Image Counter */}
+              <div className="absolute bottom-8 left-1/2 -translate-x-1/2 text-white/60 font-mono text-sm">
+                {activeLightboxImageIndex + 1} / {selectedProject.images.length}
+              </div>
+            </div>
+          )}
+        </AnimatePresence>
+
+        {/* Resume Modal */}
+        <AnimatePresence>
+          {showResume && (
+            <div className="fixed inset-0 z-[150] flex items-center justify-center p-4 md:p-6">
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onClick={() => setShowResume(false)}
+                className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"
+              />
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.9, y: 20 }}
+                className="relative w-full max-w-4xl max-h-[90vh] bg-white rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col"
+              >
+                <button
+                  onClick={() => setShowResume(false)}
+                  className="absolute top-6 right-6 z-10 p-2 bg-white/80 backdrop-blur-md rounded-full text-slate-900 hover:bg-slate-900 hover:text-white transition-all shadow-sm"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+
+                <div className="overflow-y-auto p-8 md:p-16">
+                  <div className="flex flex-col md:flex-row justify-between items-start gap-8 mb-12 border-b border-slate-100 pb-12">
+                    <div>
+                      <h2 className="text-5xl font-bold tracking-tighter mb-2">Lucas Bartlome</h2>
+                      <p className="text-xl text-slate-500 font-medium">Software Developer & IT Professional</p>
+                    </div>
+                    <div className="flex flex-col gap-2 text-sm text-slate-600">
+                      <a href="mailto:lukebartlome@gmail.com" className="flex items-center gap-2 hover:text-slate-900 transition-colors">
+                        <Mail className="w-4 h-4" /> lukebartlome@gmail.com
+                      </a>
+                      <a href="https://www.linkedin.com/in/lucasbartlome/" className="flex items-center gap-2 hover:text-slate-900 transition-colors">
+                        <Linkedin className="w-4 h-4" /> linkedin.com/in/lucasbartlome
+                      </a>
+                      <a href="https://github.com/lucasbartlome" className="flex items-center gap-2 hover:text-slate-900 transition-colors">
+                        <Github className="w-4 h-4" /> github.com/lucasbartlome
+                      </a>
+                    </div>
+                  </div>
+
+                  <div className="grid md:grid-cols-[1fr_2fr] gap-16">
+                    <div className="space-y-12">
+                      <section>
+                        <h3 className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-slate-400 mb-6">
+                          <GraduationCap className="w-4 h-4" /> Education
+                        </h3>
+                        <div className="space-y-6">
+                          <div>
+                            <p className="font-bold text-slate-900">B.S. in Computer Science / IT</p>
+                            <p className="text-sm text-slate-500 italic">University Level Education</p>
+                          </div>
+                          <div>
+                            <p className="font-bold text-slate-900">High School Diploma</p>
+                            <p className="text-sm text-slate-500 italic">Arnold, Missouri</p>
+                          </div>
+                        </div>
+                      </section>
+
+                      <section>
+                        <h3 className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-slate-400 mb-6">
+                          <Award className="w-4 h-4" /> Core Skills
+                        </h3>
+                        <div className="flex flex-wrap gap-2">
+                          {["Python", "Java", "C++", "SQL", "React", "Node.js", "Linux", "Raspberry Pi", "API Integration", "Database Design", "Systems Analysis"].map(skill => (
+                            <span key={skill} className="px-3 py-1 bg-slate-50 border border-slate-100 rounded-lg text-xs font-medium text-slate-600">
+                              {skill}
+                            </span>
+                          ))}
+                        </div>
+                      </section>
+
+                      <section>
+                        <h3 className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-slate-400 mb-6">
+                          <Globe className="w-4 h-4" /> Languages
+                        </h3>
+                        <div className="space-y-2 text-sm text-slate-600">
+                          <p><span className="font-bold text-slate-900">English:</span> Native</p>
+                          <p><span className="font-bold text-slate-900">German:</span> Conversational / Family Heritage</p>
+                        </div>
+                      </section>
+                    </div>
+
+                    <div className="space-y-12">
+                      <section>
+                        <h3 className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-slate-400 mb-6">
+                          <Briefcase className="w-4 h-4" /> Experience
+                        </h3>
+                        <div className="space-y-10">
+                          <div className="relative pl-8 border-l border-slate-100">
+                            <div className="absolute left-[-5px] top-1.5 w-2.5 h-2.5 rounded-full bg-slate-900" />
+                            <div className="mb-2 flex justify-between items-start">
+                              <h4 className="font-bold text-lg">Motivation Technologies</h4>
+                              <span className="text-xs font-bold bg-slate-100 px-2 py-1 rounded text-slate-500">Internship</span>
+                            </div>
+                            <p className="text-slate-600 mb-4">Software Development Intern</p>
+                            <ul className="space-y-2 text-sm text-slate-500 list-disc pl-4">
+                              <li>Developed an AI Podcast Generator prototype using Python and OpenAI APIs.</li>
+                              <li>Gained experience in API integration, data handling, and UI design.</li>
+                              <li>Collaborated in a technical team environment to solve complex logic problems.</li>
+                            </ul>
+                          </div>
+
+                          <div className="relative pl-8 border-l border-slate-100">
+                            <div className="absolute left-[-5px] top-1.5 w-2.5 h-2.5 rounded-full bg-slate-200" />
+                            <div className="mb-2 flex justify-between items-start">
+                              <h4 className="font-bold text-lg">Client-Facing Service Roles</h4>
+                              <span className="text-xs font-bold bg-slate-100 px-2 py-1 rounded text-slate-500">Professional</span>
+                            </div>
+                            <p className="text-slate-600 mb-4">Customer Support & Technical Communication</p>
+                            <ul className="space-y-2 text-sm text-slate-500 list-disc pl-4">
+                              <li>Strengthened communication and problem-solving skills through direct client interaction.</li>
+                              <li>Translated technical concepts for non-technical users.</li>
+                              <li>Managed high-pressure situations with professionalism and empathy.</li>
+                            </ul>
+                          </div>
+                        </div>
+                      </section>
+
+                      <section>
+                        <h3 className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-slate-400 mb-6">
+                          <FileText className="w-4 h-4" /> Summary
+                        </h3>
+                        <p className="text-slate-600 leading-relaxed italic">
+                          "I am an aspiring Software Developer and IT professional with a strong foundation in programming, database management, and systems analysis. I am eager to apply my skills to real-world projects and continue growing as a developer."
+                        </p>
+                      </section>
+
+                      <div className="pt-8 flex justify-center">
+                        <a 
+                          href="/resume.pdf" 
+                          target="_blank"
+                          className="flex items-center gap-2 bg-slate-900 text-white px-8 py-4 rounded-full font-bold hover:bg-slate-800 transition-all shadow-lg shadow-slate-900/10"
+                        >
+                          <Download className="w-5 h-5" />
+                          Download PDF Version
+                        </a>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </motion.div>
             </div>
@@ -528,7 +752,12 @@ export default function App() {
         <div className="flex items-center gap-6">
           <a href="https://github.com/lucasbartlome" className="hover:text-slate-900 transition-colors">Github</a>
           <a href="https://www.linkedin.com/in/lucasbartlome/" className="hover:text-slate-900 transition-colors">LinkedIn</a>
-          <a href="#" className="hover:text-slate-900 transition-colors">Resume</a>
+          <button 
+            onClick={() => setShowResume(true)}
+            className="hover:text-slate-900 transition-colors cursor-pointer"
+          >
+            Resume
+          </button>
         </div>
       </footer>
     </div>
