@@ -19,7 +19,10 @@ import {
   Globe,
   MessageSquare,
   BarChart3,
-  Search
+  Search,
+  X,
+  Image as ImageIcon,
+  Info
 } from 'lucide-react';
 import { cn } from './lib/utils';
 
@@ -27,8 +30,10 @@ import { cn } from './lib/utils';
 interface Project {
   title: string;
   description: string;
+  longDescription: string;
   tags: string[];
   icon: React.ReactNode;
+  images: string[];
 }
 
 interface Skill {
@@ -99,24 +104,52 @@ const SectionHeading = ({ children, subtitle, id }: { children: React.ReactNode,
 );
 
 export default function App() {
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [activeTab, setActiveTab] = useState<'overview' | 'gallery'>('overview');
+
+  // Reset tab when closing modal
+  useEffect(() => {
+    if (!selectedProject) setActiveTab('overview');
+  }, [selectedProject]);
+
   const projects: Project[] = [
     {
       title: "AI Podcast Generator",
-      description: "Developed a prototype that uses OpenAI APIs to transform text content into structured podcast scripts and audio. Integrated data handling and custom UI design.",
+      description: "Developed a prototype that uses OpenAI APIs to transform text content into structured podcast scripts and audio.",
+      longDescription: "During my internship at Motivation Technologies, my team developed an AI Podcast Generator prototype. We used Python and OpenAI APIs to automate the creation of podcast scripts from various text sources. The project involved complex API integration, prompt engineering to ensure high-quality script generation, and designing a user-friendly interface for content creators to manage their generated audio.",
       tags: ["Python", "OpenAI API", "UI Design"],
-      icon: <MessageSquare className="w-6 h-6" />
+      icon: <MessageSquare className="w-6 h-6" />,
+      images: [
+        "/images/Podcast1.png",
+        "/images/Podcast2.png",
+        "/images/Podcast3.png"
+      ]
     },
     {
-      title: "Game Development Projects",
-      description: "Explored game mechanics and interactive storytelling through various development environments, bridging the gap between code and entertainment.",
-      tags: ["C++", "Game Design", "Problem Solving"],
-      icon: <Terminal className="w-6 h-6" />
+      title: "Fishing Game (C++)",
+      description: "A custom-built fishing simulation exploring game mechanics and interactive storytelling.",
+      longDescription: "I've always been fascinated by how lines of code transform into interactive experiences. This fishing game was a deep dive into C++ and game logic. I focused on the problem-solving aspect of game design—figuring out how to make systems interact smoothly, managing game states, and creating rewarding feedback loops for players.",
+      tags: ["C++", "Game Design", "Logic"],
+      icon: <Terminal className="w-6 h-6" />,
+      images: [
+        "/images/fishinggame1.png",
+        "/images/fishinggame2.png",
+        "/images/fishinggame3.png",
+        "/images/fishinggame4.png",
+        "/images/fishinggame5.png"
+      ]
     },
     {
-      title: "Raspberry Pi Systems",
-      description: "Custom hardware integrations and automation scripts using Raspberry Pi for home networking and experimental computing.",
-      tags: ["Hardware", "Linux", "Python"],
-      icon: <Cpu className="w-6 h-6" />
+      title: "Database & Systems Analysis",
+      description: "Technical implementations of database structures and systems analysis for optimized data handling.",
+      longDescription: "Beyond software development, I have a strong foundation in database management. I've worked on designing and analyzing complex data systems to ensure integrity and performance. These projects showcase my ability to structure raw data into meaningful, accessible architectures.",
+      tags: ["SQL", "Databases", "Systems Analysis"],
+      icon: <Database className="w-6 h-6" />,
+      images: [
+        "/images/Database1.png",
+        "/images/Database2.png",
+        "/images/Database3.png"
+      ]
     }
   ];
 
@@ -204,8 +237,8 @@ export default function App() {
             className="aspect-square bg-slate-200 rounded-3xl overflow-hidden relative group"
           >
             <img 
-              src="https://picsum.photos/seed/tech/800/800" 
-              alt="Workspace" 
+              src="/images/ProfileImg.jpeg" 
+              alt="Lucas Bartlome" 
               className="object-cover w-full h-full grayscale group-hover:grayscale-0 transition-all duration-700"
               referrerPolicy="no-referrer"
             />
@@ -258,7 +291,7 @@ export default function App() {
           <div className="order-2 md:order-1 grid grid-cols-2 gap-4">
             <div className="space-y-4">
               <div className="h-48 bg-slate-200 rounded-2xl overflow-hidden">
-                <img src="https://picsum.photos/seed/service1/400/400" className="w-full h-full object-cover grayscale" referrerPolicy="no-referrer" />
+                <img src="/images/FishPic.png" className="w-full h-full object-cover grayscale" referrerPolicy="no-referrer" />
               </div>
               <div className="h-64 bg-slate-900 rounded-2xl flex items-center justify-center p-6 text-center">
                 <Users className="w-12 h-12 text-white opacity-20 absolute" />
@@ -267,9 +300,11 @@ export default function App() {
             </div>
             <div className="space-y-4 pt-8">
               <div className="h-64 bg-slate-300 rounded-2xl overflow-hidden">
-                <img src="https://picsum.photos/seed/service2/400/400" className="w-full h-full object-cover grayscale" referrerPolicy="no-referrer" />
+                <img src="/images/FishPic2.png" className="w-full h-full object-cover grayscale" referrerPolicy="no-referrer" />
               </div>
-              <div className="h-48 bg-slate-100 rounded-2xl border border-slate-200" />
+              <div className="h-48 bg-slate-100 rounded-2xl border border-slate-200 overflow-hidden">
+                <img src="/images/tech-banner.png" className="w-full h-full object-cover opacity-50" referrerPolicy="no-referrer" />
+              </div>
             </div>
           </div>
           <motion.div
@@ -312,7 +347,8 @@ export default function App() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className="group bg-white border border-slate-200 rounded-3xl p-8 hover:shadow-xl hover:-translate-y-1 transition-all"
+                onClick={() => setSelectedProject(project)}
+                className="group bg-white border border-slate-200 rounded-3xl p-8 hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer"
               >
                 <div className="w-14 h-14 bg-slate-50 rounded-2xl flex items-center justify-center mb-6 text-slate-900 group-hover:bg-slate-900 group-hover:text-white transition-colors">
                   {project.icon}
@@ -333,6 +369,125 @@ export default function App() {
           </div>
         </section>
 
+        {/* Project Modal */}
+        <AnimatePresence>
+          {selectedProject && (
+            <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-6">
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onClick={() => setSelectedProject(null)}
+                className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"
+              />
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.9, y: 20 }}
+                className="relative w-full max-w-4xl max-h-[90vh] bg-white rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col"
+              >
+                <button
+                  onClick={() => setSelectedProject(null)}
+                  className="absolute top-6 right-6 z-10 p-2 bg-white/80 backdrop-blur-md rounded-full text-slate-900 hover:bg-slate-900 hover:text-white transition-all shadow-sm"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+
+                <div className="overflow-y-auto p-8 md:p-12">
+                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
+                    <div className="flex items-center gap-4">
+                      <div className="w-12 h-12 bg-slate-900 rounded-xl flex items-center justify-center text-white shrink-0">
+                        {selectedProject.icon}
+                      </div>
+                      <div>
+                        <h3 className="text-3xl font-bold tracking-tight">{selectedProject.title}</h3>
+                        <div className="flex flex-wrap gap-2 mt-2">
+                          {selectedProject.tags.map(tag => (
+                            <span key={tag} className="text-[10px] font-bold uppercase tracking-wider px-2 py-1 bg-slate-100 rounded-md text-slate-500">
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Tab Switcher */}
+                    <div className="flex p-1 bg-slate-100 rounded-xl self-start md:self-center">
+                      <button
+                        onClick={() => setActiveTab('overview')}
+                        className={cn(
+                          "flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all",
+                          activeTab === 'overview' ? "bg-white text-slate-900 shadow-sm" : "text-slate-500 hover:text-slate-700"
+                        )}
+                      >
+                        <Info className="w-4 h-4" />
+                        Overview
+                      </button>
+                      <button
+                        onClick={() => setActiveTab('gallery')}
+                        className={cn(
+                          "flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all",
+                          activeTab === 'gallery' ? "bg-white text-slate-900 shadow-sm" : "text-slate-500 hover:text-slate-700"
+                        )}
+                      >
+                        <ImageIcon className="w-4 h-4" />
+                        Gallery
+                      </button>
+                    </div>
+                  </div>
+
+                  <AnimatePresence mode="wait">
+                    {activeTab === 'overview' ? (
+                      <motion.div
+                        key="overview"
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: 10 }}
+                        transition={{ duration: 0.2 }}
+                        className="max-w-3xl"
+                      >
+                        <h4 className="text-sm font-bold uppercase tracking-widest text-slate-400 mb-4">Project Overview</h4>
+                        <p className="text-lg text-slate-600 leading-relaxed">
+                          {selectedProject.longDescription}
+                        </p>
+                      </motion.div>
+                    ) : (
+                      <motion.div
+                        key="gallery"
+                        initial={{ opacity: 0, x: 10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: -10 }}
+                        transition={{ duration: 0.2 }}
+                      >
+                        <h4 className="text-sm font-bold uppercase tracking-widest text-slate-400 mb-6">Visual Gallery</h4>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                          {selectedProject.images.map((img, i) => (
+                            <motion.div 
+                              key={i}
+                              initial={{ opacity: 0, scale: 0.9 }}
+                              animate={{ opacity: 1, scale: 1 }}
+                              transition={{ delay: i * 0.05 }}
+                              className="rounded-2xl overflow-hidden bg-slate-100 aspect-video group relative"
+                            >
+                              <img 
+                                src={img} 
+                                alt={`${selectedProject.title} screenshot ${i + 1}`} 
+                                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                referrerPolicy="no-referrer"
+                              />
+                              <div className="absolute inset-0 bg-slate-900/0 group-hover:bg-slate-900/10 transition-colors" />
+                            </motion.div>
+                          ))}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              </motion.div>
+            </div>
+          )}
+        </AnimatePresence>
+
         {/* Contact CTA */}
         <section className="relative rounded-[3rem] bg-slate-900 py-20 px-8 md:px-16 overflow-hidden text-center">
           <div className="absolute top-0 left-0 w-full h-full opacity-20 pointer-events-none">
@@ -345,7 +500,7 @@ export default function App() {
               Let's build something <br /> meaningful together.
             </h2>
             <p className="text-slate-400 text-lg mb-10">
-              Whether you're looking for a developer, a data enthusiast, or just want to talk tech—my inbox is always open.
+              Whether you're looking for a developer, a data enthusiast, a technical customer support specialist, or just want to talk tech—my inbox is always open.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <a 
