@@ -111,6 +111,7 @@ const SectionHeading = ({ children, subtitle, id }: { children: React.ReactNode,
 
 export default function App() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [selectedSkill, setSelectedSkill] = useState<{ name: string, description: string } | null>(null);
   const [showResume, setShowResume] = useState(false);
   const [activeTab, setActiveTab] = useState<'overview' | 'gallery'>('overview');
   const [activeLightboxImageIndex, setActiveLightboxImageIndex] = useState<number | null>(null);
@@ -165,10 +166,26 @@ export default function App() {
   ];
 
   const analyticsSkills = [
-    { name: "SQL & Database Management", icon: <Database className="w-5 h-5" /> },
-    { name: "Python for Data Analysis", icon: <BarChart3 className="w-5 h-5" /> },
-    { name: "Systems Analysis", icon: <Search className="w-5 h-5" /> },
-    { name: "Data Visualization", icon: <Globe className="w-5 h-5" /> }
+    { 
+      name: "SQL & Database Management", 
+      icon: <Database className="w-5 h-5" />,
+      description: "Created and populated SQL databases for use in a classroom environment for SQL and database management."
+    },
+    { 
+      name: "Python for Data Analysis", 
+      icon: <BarChart3 className="w-5 h-5" />,
+      description: "Machine learning in Google Colab from Python for data analysis."
+    },
+    { 
+      name: "Systems Analysis", 
+      icon: <Search className="w-5 h-5" />,
+      description: "Experienced in evaluating complex workflows and database structures to identify bottlenecks and implement efficient data-driven solutions."
+    },
+    { 
+      name: "Data Visualization", 
+      icon: <Globe className="w-5 h-5" />,
+      description: "Power BI for data visualization."
+    }
   ];
 
   return (
@@ -274,12 +291,16 @@ export default function App() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className="p-6 rounded-2xl bg-slate-50 border border-slate-100 hover:border-slate-300 transition-all group"
+                onClick={() => setSelectedSkill(skill)}
+                className="p-6 rounded-2xl bg-slate-50 border border-slate-100 hover:bg-white hover:shadow-md transition-all group cursor-pointer"
               >
                 <div className="w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center mb-4 text-slate-900 group-hover:scale-110 transition-transform">
                   {skill.icon}
                 </div>
                 <h3 className="font-bold text-slate-900">{skill.name}</h3>
+                <p className="text-xs text-slate-400 mt-2 flex items-center gap-1">
+                  Click to learn more <ChevronRight className="w-3 h-3" />
+                </p>
               </motion.div>
             ))}
           </div>
@@ -615,12 +636,12 @@ export default function App() {
                         </h3>
                         <div className="space-y-6">
                           <div>
-                            <p className="font-bold text-slate-900">B.S. in Computer Science / IT</p>
-                            <p className="text-sm text-slate-500 italic">University Level Education</p>
+                            <p className="font-bold text-slate-900">Missouri University of Science and Technology</p>
+                            <p className="text-sm text-slate-500 italic">B.S. in Computer Science / IT</p>
                           </div>
                           <div>
-                            <p className="font-bold text-slate-900">High School Diploma</p>
-                            <p className="text-sm text-slate-500 italic">Arnold, Missouri</p>
+                            <p className="font-bold text-slate-900">Seckman High School</p>
+                            <p className="text-sm text-slate-500 italic">High School Diploma</p>
                           </div>
                         </div>
                       </section>
@@ -707,6 +728,39 @@ export default function App() {
                     </div>
                   </div>
                 </div>
+              </motion.div>
+            </div>
+          )}
+        </AnimatePresence>
+
+        {/* Skill Detail Modal */}
+        <AnimatePresence>
+          {selectedSkill && (
+            <div className="fixed inset-0 z-[200] flex items-center justify-center p-4">
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onClick={() => setSelectedSkill(null)}
+                className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm"
+              />
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.9, y: 20 }}
+                className="relative w-full max-w-md bg-white rounded-3xl shadow-2xl p-8 overflow-hidden"
+              >
+                <button
+                  onClick={() => setSelectedSkill(null)}
+                  className="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-900 transition-colors"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+                
+                <h3 className="text-2xl font-bold mb-4 pr-8">{selectedSkill.name}</h3>
+                <p className="text-slate-600 leading-relaxed">
+                  {selectedSkill.description}
+                </p>
               </motion.div>
             </div>
           )}
