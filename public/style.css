@@ -1,0 +1,201 @@
+/* ========== Base Reset & Globals ========== */
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html, body { overflow-x: hidden; }
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  line-height: 1.6;
+  background: #f4f4f4;
+  color: #333;
+}
+
+/* Images scale down instead of overflowing */
+img { max-width: 100%; height: auto; }
+
+/* Fluid headings */
+h1 { font-size: clamp(1.6rem, 4vw, 2.6rem); }
+h2 { font-size: clamp(1.2rem, 3vw, 1.6rem); }
+
+/* ========== Header / Banner ========== */
+header {
+  background: url("images/tech-banner.png") center/cover no-repeat;
+  color: #fff;
+  text-align: center;
+  padding: 4rem 1rem;      /* controls banner height */
+  position: relative;
+}
+
+header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4); /* darken for text readability */
+  z-index: 1;
+}
+
+header h1,
+header p,
+header nav {
+  position: relative;
+  z-index: 2;              /* on top of overlay */
+}
+
+/* ========== Header Nav as Buttons ========== */
+header nav {
+  display: flex;
+  flex-wrap: wrap;         /* allows wrapping on small screens */
+  justify-content: center;
+  gap: 10px;
+}
+
+header nav a {
+  display: inline-block;
+  padding: 10px 18px;
+  border-radius: 6px;
+  background: #686767;     /* slightly lighter than black */
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.4) inset, 0 1px 3px rgba(0,0,0,0.15);
+  transition: background 160ms ease, transform 60ms ease, box-shadow 160ms ease;
+}
+
+header nav a:hover { background: #1a1a1a; }
+
+header nav a:active {
+  transform: translateY(1px);
+  box-shadow: 0 0 0 rgba(0,0,0,0.4) inset, 0 0 0 rgba(0,0,0,0.15);
+}
+
+/* Keyboard focus */
+header nav a:focus-visible {
+  outline: 2px solid #7aa2ff;
+  outline-offset: 2px;
+  background: #2b2b2b;
+}
+
+/* Mark the current page */
+header nav a.active {
+  background: #2a2a2a;
+  box-shadow: 0 0 0 rgba(0,0,0,0.4) inset, 0 1px 2px rgba(0,0,0,0.2);
+}
+header { overflow: clip; } /* ensures video doesn’t spill out */
+
+.header-video {
+  position: absolute;
+  inset: 0;
+  z-index: 0;               /* below your text */
+  pointer-events: none;
+}
+
+.header-video__media {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  opacity: 0;               /* hidden until ready */
+  transition: opacity .5s ease;
+}
+
+/* Fade in once ready */
+header.video-ready .header-video__media {
+  opacity: 1;
+}
+
+/* ========== Content Layout ========== */
+ul { list-style-type: disc; }
+
+.container {
+  max-width: 1000px;
+  margin: auto;
+  padding: 2rem;
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+}
+
+section { margin-bottom: 2rem; }
+
+h1, h2 { margin-bottom: 1rem; }
+
+/* About two-column */
+.about-container {
+  display: flex;
+  align-items: flex-start;   /* align text to top of image */
+  gap: 20px;
+}
+
+.about-text { flex: 1; }
+
+.about-image img {
+  width: 250px;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+/* ========== Footer ========== */
+footer {
+  text-align: center;
+  padding: 1rem;
+  background: #222;
+  color: #fff;
+  margin-top: 2rem;
+}
+
+/* Optional: footer link colors on dark */
+footer a {
+  color: #7aa2ff;
+  text-decoration: none;
+}
+footer a:hover {
+  color: #a8c3ff;
+  text-decoration: underline;
+}
+
+/* ========== Mobile Tweaks ========== */
+@media (max-width: 700px) {
+  header { padding: 2.5rem 1rem; }      /* shorter banner on phones */
+  .container { padding: 1.25rem; }
+
+  /* Stack About text over image on small screens */
+  .about-container {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+  .about-image img { width: 180px; }
+
+  /* Slightly smaller nav buttons so they fit better */
+  header nav a { padding: 9px 14px; }
+}
+
+/* Slight footer text adjustment on small devices */
+@media (max-width: 600px) {
+  footer p, footer a { font-size: 0.95rem; line-height: 1.5; }
+}
+
+/* --- Video background layer (sits above the image, below text) --- */
+header { overflow: clip; }                /* already has position:relative; good */
+.header-video {
+  position: absolute;
+  inset: 0;
+  z-index: 0;                             /* below your h1/p/nav (z-index:2) */
+  pointer-events: none;                   /* clicks go through */
+}
+.header-video__media {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  opacity: 0;                             /* hidden until ready */
+  transition: opacity .4s ease;
+}
+
+/* Fade-in once JS adds .video-ready to <header> */
+header.video-ready .header-video__media { opacity: 1; }
