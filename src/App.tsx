@@ -678,7 +678,7 @@ export default function App() {
                           <Award className="w-4 h-4" /> Core Skills
                         </h3>
                         <div className="flex flex-wrap gap-2">
-                          {["Python", "Java", "C++", "SQL", "JavaScript", "HTML", "CSS", "Wireshark", "SAP", "RStudio", "React", "Node.js", "Tailwind CSS", "Excel", "Access", "Microsoft 365", "Linux", "Raspberry Pi", "API Integration", "Database Design", "Systems Analysis", "IT Project Management", "Data Management"].map(skill => (
+                          {["Python", "Java", "C++", "SQL", "JavaScript", "HTML", "CSS", "Wireshark", "SAP", "RStudio", "React", "Node.js", "Tailwind CSS", "Advanced Excel", "Access", "Microsoft 365", "Linux", "Raspberry Pi", "API Integration", "Database Design", "Systems Analysis", "IT Project Management", "Data Management"].map(skill => (
                             <span key={skill} className="px-3 py-1 bg-slate-50 border border-slate-100 rounded-lg text-xs font-medium text-slate-600">
                               {skill}
                             </span>
