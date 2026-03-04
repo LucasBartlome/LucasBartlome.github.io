@@ -665,7 +665,7 @@ export default function App() {
                           <GraduationCap className="w-4 h-4" /> Relevant Courses
                         </h3>
                         <div className="flex flex-wrap gap-2">
-                          {["Database Management", "Intro To Python", "Intro to C++", "Coding In Java", "Intro to Data Science", "Privacy & Info Security Law", "Coding in Java 2", "Intro To SAP"].map(course => (
+                          {["Database Management", "Advanced Python", "Intro to C++", "Coding In Java", "Intro to Data Science", "Privacy & Info Security Law", "Coding in Java 2", "Advanced SAP"].map(course => (
                             <span key={course} className="px-2 py-1 bg-slate-50 border border-slate-100 rounded text-[10px] font-medium text-slate-500">
                               {course}
                             </span>
