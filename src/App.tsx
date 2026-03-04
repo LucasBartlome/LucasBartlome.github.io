@@ -21,6 +21,8 @@ import {
   BarChart3,
   Search,
   X,
+  Shield,
+  Phone,
   Image as ImageIcon,
   Info,
   ChevronLeft,
@@ -28,7 +30,8 @@ import {
   Briefcase,
   GraduationCap,
   Award,
-  Download
+  Download,
+  Gamepad2
 } from 'lucide-react';
 import { cn } from './lib/utils';
 
@@ -50,7 +53,7 @@ interface Skill {
 
 // --- Components ---
 
-const Navbar = () => {
+const Navbar = ({ onOpenResume }: { onOpenResume: () => void }) => {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -74,6 +77,12 @@ const Navbar = () => {
           <a href="#analytics" className="hover:text-slate-900 transition-colors">Analytics</a>
           <a href="#service" className="hover:text-slate-900 transition-colors">Service</a>
           <a href="#projects" className="hover:text-slate-900 transition-colors">Projects</a>
+          <button 
+            onClick={onOpenResume}
+            className="hover:text-slate-900 transition-colors cursor-pointer"
+          >
+            Resume
+          </button>
           <a 
             href="mailto:lukebartlome@gmail.com" 
             className="bg-slate-900 text-white px-4 py-2 rounded-full hover:bg-slate-800 transition-all"
@@ -138,11 +147,11 @@ export default function App() {
       ]
     },
     {
-      title: "Fishing Game (C++)",
-      description: "A custom-built fishing simulation exploring game mechanics and interactive storytelling.",
-      longDescription: "I've always been fascinated by how lines of code transform into interactive experiences. This fishing game was a deep dive into C++ and game logic. I focused on the problem-solving aspect of game design—figuring out how to make systems interact smoothly, managing game states, and creating rewarding feedback loops for players.",
-      tags: ["C++", "Game Design", "Logic"],
-      icon: <Terminal className="w-6 h-6" />,
+      title: "Fishing Game (Python)",
+      description: "A custom-built fishing simulation exploring game mechanics and interactive storytelling using Pygame.",
+      longDescription: "I've always been fascinated by how lines of code transform into interactive experiences. This fishing game was a deep dive into Python and the Pygame library. I focused on the problem-solving aspect of game design—figuring out how to make systems interact smoothly, managing game states, and creating rewarding feedback loops for players.",
+      tags: ["Python", "Pygame", "Game Design"],
+      icon: <Gamepad2 className="w-6 h-6" />,
       images: [
         "/images/fishinggame1.png",
         "/images/fishinggame2.png",
@@ -158,9 +167,7 @@ export default function App() {
       tags: ["SQL", "Databases", "Systems Analysis"],
       icon: <Database className="w-6 h-6" />,
       images: [
-        "/images/Database1.png",
-        "/images/Database2.png",
-        "/images/Database3.png"
+        "/images/Database1.png"
       ]
     }
   ];
@@ -169,28 +176,28 @@ export default function App() {
     { 
       name: "SQL & Database Management", 
       icon: <Database className="w-5 h-5" />,
-      description: "Created and populated SQL databases for use in a classroom environment for SQL and database management."
+      description: "Beyond basic classroom exercises, I've implemented full-stack database solutions. This includes designing relational schemas, merging databases with web frontends to create real-time dashboards, and optimizing queries for large datasets to ensure seamless data flow between the server and the user interface."
     },
     { 
       name: "Python for Data Analysis", 
       icon: <BarChart3 className="w-5 h-5" />,
-      description: "Machine learning in Google Colab from Python for data analysis."
+      description: "Proficient in using Python libraries like Pandas, NumPy, and Matplotlib for data manipulation. I've also explored Machine Learning models in Google Colab, focusing on predictive analytics and pattern recognition to extract actionable insights from raw data."
     },
     { 
-      name: "Systems Analysis", 
-      icon: <Search className="w-5 h-5" />,
-      description: "Experienced in evaluating complex workflows and database structures to identify bottlenecks and implement efficient data-driven solutions."
+      name: "Cyber Security & Network Analysis", 
+      icon: <Shield className="w-5 h-5" />,
+      description: "Experienced in network traffic analysis using Wireshark and implementing information security protocols. I focus on identifying vulnerabilities, monitoring for anomalies, and ensuring the integrity of data across complex network infrastructures."
     },
     { 
       name: "Data Visualization", 
       icon: <Globe className="w-5 h-5" />,
-      description: "Power BI for data visualization."
+      description: "Expertise in transforming complex datasets into intuitive visual stories using Power BI and custom web-based charts. I focus on creating interactive visualizations that allow stakeholders to explore data and make informed decisions at a glance."
     }
   ];
 
   return (
     <div className="min-h-screen bg-slate-50 font-sans text-slate-900 selection:bg-slate-900 selection:text-white">
-      <Navbar />
+      <Navbar onOpenResume={() => setShowResume(true)} />
 
       {/* Hero Section */}
       <header className="relative pt-32 pb-20 md:pt-48 md:pb-32 overflow-hidden">
@@ -251,7 +258,7 @@ export default function App() {
                 I am an aspiring Software Developer and IT professional with a strong foundation in programming, database management, and systems analysis. 
               </p>
               <p>
-                My journey started in Arnold, Missouri, inspired by my father's work as a developer. From Scratch in middle school to Python in high school and complex systems in college, I've always been fascinated by how code transforms into reality.
+                My journey started in Arnold, Missouri, inspired by my father's work as a developer. From Scratch in middle school to Python in high school and complex systems in college, I've always been fascinated by how code transforms our world.
               </p>
               <p>
                 With experience in <span className="text-slate-900 font-medium">Python, Java, C++, and SQL</span>, I specialize in creating efficient, scalable solutions that solve real-world problems.
@@ -309,12 +316,45 @@ export default function App() {
             <div className="max-w-xl">
               <h4 className="text-xl font-bold mb-2">Systems Analysis & Optimization</h4>
               <p className="text-slate-400">
-                Experienced in evaluating complex workflows and database structures to identify bottlenecks and implement efficient data-driven solutions.
+                Specializing in the optimization of technical architectures and the streamlining of data workflows to drive organizational efficiency.
               </p>
             </div>
             <div className="text-4xl font-mono font-bold text-slate-700">
               01011001
             </div>
+          </div>
+        </section>
+
+        {/* Projects Section */}
+        <section id="projects">
+          <SectionHeading subtitle="Selected Work">Featured Projects</SectionHeading>
+          <div className="grid md:grid-cols-3 gap-8">
+            {projects.map((project, i) => (
+              <motion.div
+                key={project.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+                onClick={() => setSelectedProject(project)}
+                className="group bg-white border border-slate-200 rounded-3xl p-8 hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer"
+              >
+                <div className="w-14 h-14 bg-slate-50 rounded-2xl flex items-center justify-center mb-6 text-slate-900 group-hover:bg-slate-900 group-hover:text-white transition-colors">
+                  {project.icon}
+                </div>
+                <h3 className="text-2xl font-bold mb-3">{project.title}</h3>
+                <p className="text-slate-600 mb-6 line-clamp-3">
+                  {project.description}
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {project.tags.map(tag => (
+                    <span key={tag} className="text-[10px] font-bold uppercase tracking-wider px-2 py-1 bg-slate-100 rounded-md text-slate-500">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </motion.div>
+            ))}
           </div>
         </section>
 
@@ -366,39 +406,6 @@ export default function App() {
               </ul>
             </div>
           </motion.div>
-        </section>
-
-        {/* Projects Section */}
-        <section id="projects">
-          <SectionHeading subtitle="Selected Work">Featured Projects</SectionHeading>
-          <div className="grid md:grid-cols-3 gap-8">
-            {projects.map((project, i) => (
-              <motion.div
-                key={project.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                onClick={() => setSelectedProject(project)}
-                className="group bg-white border border-slate-200 rounded-3xl p-8 hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer"
-              >
-                <div className="w-14 h-14 bg-slate-50 rounded-2xl flex items-center justify-center mb-6 text-slate-900 group-hover:bg-slate-900 group-hover:text-white transition-colors">
-                  {project.icon}
-                </div>
-                <h3 className="text-2xl font-bold mb-3">{project.title}</h3>
-                <p className="text-slate-600 mb-6 line-clamp-3">
-                  {project.description}
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {project.tags.map(tag => (
-                    <span key={tag} className="text-[10px] font-bold uppercase tracking-wider px-2 py-1 bg-slate-100 rounded-md text-slate-500">
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              </motion.div>
-            ))}
-          </div>
         </section>
 
         {/* Project Modal */}
@@ -616,6 +623,12 @@ export default function App() {
                       <p className="text-xl text-slate-500 font-medium">Software Developer & IT Professional</p>
                     </div>
                     <div className="flex flex-col gap-2 text-sm text-slate-600">
+                      <p className="flex items-center gap-2">
+                        <Globe className="w-4 h-4" /> 5545 Terrace View Ct., St. Louis, MO 63128
+                      </p>
+                      <a href="tel:3146622218" className="flex items-center gap-2 hover:text-slate-900 transition-colors">
+                        <Phone className="w-4 h-4" /> 314-662-2218
+                      </a>
                       <a href="mailto:lukebartlome@gmail.com" className="flex items-center gap-2 hover:text-slate-900 transition-colors">
                         <Mail className="w-4 h-4" /> lukebartlome@gmail.com
                       </a>
@@ -637,7 +650,8 @@ export default function App() {
                         <div className="space-y-6">
                           <div>
                             <p className="font-bold text-slate-900">Missouri University of Science and Technology</p>
-                            <p className="text-sm text-slate-500 italic">B.S. in Computer Science / IT</p>
+                            <p className="text-sm text-slate-500 italic">B.S. in Information Science & Technology</p>
+                            <p className="text-xs text-slate-400 mt-1">GPA: 3.38 | Graduated: May 2025</p>
                           </div>
                           <div>
                             <p className="font-bold text-slate-900">Seckman High School</p>
@@ -648,10 +662,23 @@ export default function App() {
 
                       <section>
                         <h3 className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-slate-400 mb-6">
+                          <GraduationCap className="w-4 h-4" /> Relevant Courses
+                        </h3>
+                        <div className="flex flex-wrap gap-2">
+                          {["Database Management", "Intro To Python", "Intro to C++", "Coding In Java", "Intro to Data Science", "Privacy & Info Security Law", "Coding in Java 2", "Intro To SAP"].map(course => (
+                            <span key={course} className="px-2 py-1 bg-slate-50 border border-slate-100 rounded text-[10px] font-medium text-slate-500">
+                              {course}
+                            </span>
+                          ))}
+                        </div>
+                      </section>
+
+                      <section>
+                        <h3 className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-slate-400 mb-6">
                           <Award className="w-4 h-4" /> Core Skills
                         </h3>
                         <div className="flex flex-wrap gap-2">
-                          {["Python", "Java", "C++", "SQL", "React", "Node.js", "Linux", "Raspberry Pi", "API Integration", "Database Design", "Systems Analysis"].map(skill => (
+                          {["Python", "Java", "C++", "SQL", "JavaScript", "HTML", "CSS", "Wireshark", "SAP", "RStudio", "React", "Node.js", "Tailwind CSS", "Excel", "Access", "Microsoft 365", "Linux", "Raspberry Pi", "API Integration", "Database Design", "Systems Analysis", "IT Project Management", "Data Management"].map(skill => (
                             <span key={skill} className="px-3 py-1 bg-slate-50 border border-slate-100 rounded-lg text-xs font-medium text-slate-600">
                               {skill}
                             </span>
@@ -680,27 +707,55 @@ export default function App() {
                             <div className="absolute left-[-5px] top-1.5 w-2.5 h-2.5 rounded-full bg-slate-900" />
                             <div className="mb-2 flex justify-between items-start">
                               <h4 className="font-bold text-lg">Motivation Technologies</h4>
-                              <span className="text-xs font-bold bg-slate-100 px-2 py-1 rounded text-slate-500">Internship</span>
+                              <span className="text-xs font-bold bg-slate-100 px-2 py-1 rounded text-slate-500">Nov 2024 - Jan 2025</span>
                             </div>
-                            <p className="text-slate-600 mb-4">Software Development Intern</p>
+                            <p className="text-slate-600 mb-4 font-medium">Software Development Intern (Remote)</p>
                             <ul className="space-y-2 text-sm text-slate-500 list-disc pl-4">
-                              <li>Developed an AI Podcast Generator prototype using Python and OpenAI APIs.</li>
-                              <li>Gained experience in API integration, data handling, and UI design.</li>
-                              <li>Collaborated in a technical team environment to solve complex logic problems.</li>
+                              <li>Developed an AI Podcast Generator prototype using Python and OpenAI APIs (GPT and TTS).</li>
+                              <li>Created a custom UI for granular control over podcast parameters (hosts, voices, scripts).</li>
+                              <li>Engineered JSON-based script outputs and MP3 fragment generation using AI APIs.</li>
+                              <li>Collaborated in a VS Code environment to solve complex logic and integration problems.</li>
                             </ul>
                           </div>
 
                           <div className="relative pl-8 border-l border-slate-100">
                             <div className="absolute left-[-5px] top-1.5 w-2.5 h-2.5 rounded-full bg-slate-200" />
                             <div className="mb-2 flex justify-between items-start">
-                              <h4 className="font-bold text-lg">Client-Facing Service Roles</h4>
-                              <span className="text-xs font-bold bg-slate-100 px-2 py-1 rounded text-slate-500">Professional</span>
+                              <h4 className="font-bold text-lg">Sigma Pi (Missouri S&T)</h4>
+                              <span className="text-xs font-bold bg-slate-100 px-2 py-1 rounded text-slate-500">Aug 2022 - Present</span>
                             </div>
-                            <p className="text-slate-600 mb-4">Customer Support & Technical Communication</p>
+                            <p className="text-slate-600 mb-4 font-medium">New Member Education / IT Chairman</p>
                             <ul className="space-y-2 text-sm text-slate-500 list-disc pl-4">
+                              <li>Managed network infrastructure, ensuring consistent connectivity and troubleshooting issues.</li>
+                              <li>Led a comprehensive system upgrade, installing new routers, servers, and network ports.</li>
+                              <li>Guided incoming freshmen, providing support and addressing technical/academic questions.</li>
+                            </ul>
+                          </div>
+
+                          <div className="relative pl-8 border-l border-slate-100">
+                            <div className="absolute left-[-5px] top-1.5 w-2.5 h-2.5 rounded-full bg-slate-200" />
+                            <div className="mb-2 flex justify-between items-start">
+                              <h4 className="font-bold text-lg">Titan Pest Control</h4>
+                              <span className="text-xs font-bold bg-slate-100 px-2 py-1 rounded text-slate-500">May 2023 - Present</span>
+                            </div>
+                            <p className="text-slate-600 mb-4 font-medium">Pest Control Technician</p>
+                            <ul className="space-y-2 text-sm text-slate-500 list-disc pl-4">
+                              <li>Provide commercial and residential services, including inspections and preventative solutions.</li>
+                              <li>Engage with clients to assess issues and offer tailored recommendations for resolution.</li>
                               <li>Strengthened communication and problem-solving skills through direct client interaction.</li>
-                              <li>Translated technical concepts for non-technical users.</li>
-                              <li>Managed high-pressure situations with professionalism and empathy.</li>
+                            </ul>
+                          </div>
+
+                          <div className="relative pl-8 border-l border-slate-100">
+                            <div className="absolute left-[-5px] top-1.5 w-2.5 h-2.5 rounded-full bg-slate-200" />
+                            <div className="mb-2 flex justify-between items-start">
+                              <h4 className="font-bold text-lg">Jacks Electric</h4>
+                              <span className="text-xs font-bold bg-slate-100 px-2 py-1 rounded text-slate-500">May 2022 - Aug 2022</span>
+                            </div>
+                            <p className="text-slate-600 mb-4 font-medium">Electrician</p>
+                            <ul className="space-y-2 text-sm text-slate-500 list-disc pl-4">
+                              <li>Wired residential and commercial properties, collaborating in a team to achieve objectives.</li>
+                              <li>Engaged in complex problem-solving to determine effective wiring solutions for entire properties.</li>
                             </ul>
                           </div>
                         </div>
@@ -711,7 +766,7 @@ export default function App() {
                           <FileText className="w-4 h-4" /> Summary
                         </h3>
                         <p className="text-slate-600 leading-relaxed italic">
-                          "I am an aspiring Software Developer and IT professional with a strong foundation in programming, database management, and systems analysis. I am eager to apply my skills to real-world projects and continue growing as a developer."
+                          "Motivated Information Science & Technology student with a strong foundation in Python, Java, and C++. Passionate about software development, machine learning, and creating innovative tech solutions. Eager to apply classroom knowledge and internship experience in a dynamic entry-level programming role."
                         </p>
                       </section>
 
